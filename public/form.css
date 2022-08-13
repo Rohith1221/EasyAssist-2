@@ -21,7 +21,6 @@ textarea {
   border-radius: 10px;
   line-height: 20px;
 }
-
 .inp-wrap {
   display: flex;
   flex-wrap: wrap;
@@ -35,7 +34,7 @@ textarea {
 #uname,
 #phone,
 #mail {
-  width: 300px;
+  width: 200px;
   justify-content: center;
   background-color: rgb(202, 202, 202);
   color: rgb(6, 28, 73);
