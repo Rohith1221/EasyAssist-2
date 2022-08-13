@@ -47,4 +47,24 @@ justify-content: center;
 display: flex;
 align-items: flex-end;
 font-size: 0.8em;
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+}
+.footer i{
+  margin-left: 10px;
+}
+.footer b{
+  margin-left: 3px;
+  text-shadow: 2px 2px 10px #00ffa6;
+}
+.fa-brands{
+  color: rgb(51, 11, 84);
+  font-size: 14px;
+  transition: 0.3s ease-in-out;
+}
+
+.fa-brands:hover{
+  text-shadow: 1px 1px 10px #00bfff;
 }

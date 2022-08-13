@@ -2,6 +2,7 @@
 <html>
   <head>
     <%- include('./partials/bootstrapcdn.ejs') %>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link
       rel="stylesheet"
@@ -115,14 +116,15 @@
               <% }%>
               <div class="container cont-btns">
                 <a href="/issues/<%=issue._id%>" class="btn btn-primary"
-                  >More Information
+                  >More Info <i class="fa-solid fa-file-lines"></i>
                 </a>
                 <button
                   class="btn btn-danger deleteThisIssue"
                   data-doc="<%=issue._id %>"
                   onclick="deletefun()"
                   >
-                  delete this issue
+                  Delete
+                  <i class="fa-solid fa-trash"></i>
                 </button>
               </div>
             </div>

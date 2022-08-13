@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins&display=swap");
 
-body {
+.nav-item{
+  margin-left: 15px;
 }
 
 * {
@@ -22,9 +23,11 @@ a:hover {
   width: 100%;
 }
 .card {
+  flex-wrap:wrap;
   margin: 10px;
-  width: 400px;
-  height: 400px;
+  width: 370px;
+  height: 370px;
+  margin: 10px;
   /* background-color: rgb(199, 255, 116); */
   /* background-color: rgb(240, 120, 128); */
 }
@@ -73,4 +76,8 @@ li {
 
 .cont-btns button {
   margin-left: 16px;
+}
+
+.fa-solid{
+  margin-left:3px ;
 }
