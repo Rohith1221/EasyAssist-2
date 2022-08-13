@@ -1,0 +1,76 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins&display=swap");
+
+body {
+}
+
+* {
+  font-family: poppins;
+  font-weight: 500;
+}
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.card {
+  margin: 10px;
+  width: 400px;
+  height: 400px;
+  /* background-color: rgb(199, 255, 116); */
+  /* background-color: rgb(240, 120, 128); */
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-start;
+}
+
+.headding-title {
+  text-align: center;
+  font-size: 40px;
+  font-family: montserrat;
+  font-weight: 600;
+}
+
+ul,
+li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+li {
+  margin-bottom: 10px;
+}
+.id-filter {
+  justify-content: center;
+}
+
+#myInput {
+  width: 300px;
+}
+
+.button-cont button {
+  margin: 10px;
+  /* color: white; */
+}
+
+.cont-btns button {
+  margin-left: 16px;
+}

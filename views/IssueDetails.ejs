@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <%- include('./partials/bootstrapcdn.ejs') %>
+    <link
+      rel="stylesheet"
+      href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"
+    />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title></title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./public/issuedetails.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins&display=swap");
+
+      * {
+        font-family: poppins;
+        font-weight: 500;
+        line-height: 27px;
+      }
+      a {
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: none;
+      }
+      .taskm {
+        padding: 10px 10px;
+        background-color: aliceblue;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.3);
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      #map {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+      }
+      .leaflet-popup .leaflet-popup-content {
+        font-size: 13px;
+        font-family: "poppins";
+      }
+      .leaflet-popup .leaflet-popup-tip {
+        background-color: #2d3439;
+      }
+      .leaflet-popup .leaflet-popup-content-wrapper {
+        background-color: #2d3439;
+        color: #ececec;
+        border-radius: 5px;
+        padding-right: 0.6rem;
+      }
+      .organ .leaflet-popup-content-wrapper {
+        border-left: 5px solid rgb(255, 71, 71);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#" style="margin-left: 3px"></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#"
+                >Issue <%=issue.issueID%></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/issues"
+                >Issues Page</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <% const comp = issue.Complaint_description%> <% const s = new
+    Date(issue.createdAt).toLocaleString(undefined, {timeZone:'Asia/Kolkata'})%>
+    <% const ending = new Date(issue.updatedAt).toLocaleString(undefined,
+    {timeZone:'Asia/Kolkata'})%> <% const date = new Date(issue.createdAt)%>
+    <div class="container">
+      <div id="map" style="height: 250px"></div>
+
+      <div
+        class="card"
+        style="background-color: <%= issue.taskmanger_mail_sent ? 'rgb(233, 255, 201)' : 'rgb(255, 201, 205)' %>
+        ; border: <%= issue.issue_complete ? '4px solid rgb(199, 255, 116)' : '5px solid rgb(240, 120, 128)' %>"
+      >
+        <div class="card-header"><b>Issue ID : <%=issue.issueID%></b></div>
+        <div class="card-body">
+          <h5 class="card-title"><b>Complaint description:</b></h5>
+          <p class="card-text"><%= issue.Complaint_description%></p>
+          <h6 class="card-title"><b>Complaint raised by:</b></h6>
+          <p class="card-text"><%= issue.uname%></p>
+          <h6 class="card-title"><b> mail id:</b></h6>
+          <p class="card-text"><%= issue.mail%></p>
+          <h6 class="card-title"><b>Task manager:</b></h6>
+          <p class="card-text"><%= issue.task_manger%></p>
+          <h6 class="card-title"><b>Task manager mail ID:</b></h6>
+          <p class="card-text"><%= issue.task_manger_mail%></p>
+          <h6 class="card-title"><b>Date registered:</b></h6>
+          <p class="card-text"><%=s%></p>
+          <h6 class="card-title"><b>Image captured:</b></h6>
+          <div class="container" style="display: flex; justify-content: center">
+            <img
+              src="/Images/<%=issue.img%>"
+              style="
+                width: 50%;
+                height: 50%;
+                scale: 1;
+                object-fit: contain;
+                border-radius: 5px;
+              "
+              alt="image not available"
+            />
+          </div>
+          <% if(issue.issue_complete){%>
+          <h6 class="card-title"><b>Date work completed:</b></h6>
+          <p class="card-text"><%=ending%></p>
+          <% }%>
+        </div>
+      </div>
+    </div>
+    <br />
+    <% if(issue.task_manger == ""){%>
+    <div class="container">
+      <div class="alert alert-danger" role="alert">
+        Task manager is not assigned yet , assign one below
+      </div>
+      <div class="taskm">
+        <form action="/assign/<%=issue._id%>" method="POST">
+          <label for="taskmanager">Task Manager name</label>
+          <input
+            style="margin-bottom: 10px"
+            type="text"
+            class="form-control"
+            name="taskmanager"
+            id="taskmanager"
+            aria-describedby="emailHelp"
+            placeholder="Enter name"
+            required
+          />
+          <label for="taskmanagermail">Task Manager mail</label>
+          <input
+            type="email"
+            class="form-control"
+            name="taskmanagermail"
+            id="taskmanagermail"
+            aria-describedby="emailHelp"
+            placeholder="Enter mail"
+            required
+          />
+          <br />
+          <button
+            class="btn btn-primary assign-task-manager"
+            data-doc="<%= issue._id %>"
+          >
+            Assign task manager
+          </button>
+        </form>
+      </div>
+      <%}%>
+    </div>
+    <div class="container">
+      <%if(!issue.taskmanger_mail_sent && issue.task_manger_mail==""){%> <%}else
+      if(!issue.taskmanger_mail_sent && issue.task_manger_mail!=""){%>
+      <form action="/issues/<%=issue.id%>" method="POST">
+        <input type="hidden" name="uname" id="uname" />
+        <input type="hidden" name="tomail" id="tomail" />
+        <input type="hidden" name="issueID" id="issueID" />
+        <input type="hidden" name="comp_desc" id="comp_desc" />
+        <input type="hidden" name="date_registered" id="date_registered" />
+        <input
+          type="hidden"
+          class="form-control"
+          name="task_manager_name"
+          id="task_manager_name"
+          aria-describedby="emailHelp"
+          placeholder="Enter name"
+          required
+        />
+        <input
+          type="hidden"
+          class="form-control"
+          name="task_manager_mail"
+          id="task_manager_mail"
+          aria-describedby="emailHelp"
+          placeholder="Enter mail"
+          required
+        />
+        <button class="btn btn-primary">send mail to task manager</button>
+      </form>
+      <%}else{%>
+      <button class="btn btn-success">Mail sent to Task Manager</button>
+      <br />
+      <%}%>
+
+      <br />
+      <% if(!issue.issue_complete){%>
+      <div class="form-check">
+        <form method="post" action="/iscomplete/<%=issue._id%>">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="flexCheckChecked"
+            name="flexCheckChecked"
+          />
+          <input type="hidden" name="result" id="result" />
+          <label class="form-check-label" for="flexCheckChecked">
+            <button class="btn btn-dark" type="submit" style="color: white">
+              Mark issue as completed
+            </button>
+          </label>
+        </form>
+      </div>
+      <%}else{%>
+      <button class="btn btn-success" style="color: white">
+        Issue completed
+      </button>
+      <br />
+      <%}%>
+
+      <br />
+
+      <button
+        class="btn btn-danger delete"
+        data-doc="<%= issue._id %>"
+        style="margin-bottom: 12px"
+      >
+        delete this issue
+      </button>
+    </div>
+    <script>
+      const longitude = "<%=issue.longitude%>";
+      const latitude = "<%=issue.latitude%>";
+
+      const coord = [latitude, longitude];
+
+      var map = L.map("map").setView(coord, 13);
+      const demo = [coord[0], coord[1]];
+      L.tileLayer("https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png", {
+        attribution:
+          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      }).addTo(map);
+
+      L.marker(demo)
+        .addTo(map)
+        .bindPopup(
+          L.popup({
+            className: "organ",
+            autoClose: false,
+            closeOnClick: false,
+          })
+        )
+        .setPopupContent("complaint registered")
+        .openPopup()
+        .addTo(map);
+
+      const trash = document.querySelector("button.delete");
+      trash.addEventListener("click", (e) => {
+        const endpoint = `/issues/${trash.dataset.doc}`;
+        fetch(endpoint, {
+          method: "DELETE",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // console.log(data);
+            window.location.href = data.redirect;
+          })
+          .catch((e) => console.log(e));
+      });
+
+      document.getElementById("uname").value = "<%=issue.uname%>";
+      document.getElementById("tomail").value = "<%=issue.mail%>";
+      document.getElementById("issueID").value = "<%=issue.issueID%>";
+      document.getElementById("date_registered").value = "<%=s%>";
+      document.getElementById("comp_desc").value = `<%=comp%>`;
+      document.getElementById(
+        "task_manager_name"
+      ).value = `<%=issue.task_manger%>`;
+      document.getElementById(
+        "task_manager_mail"
+      ).value = `<%=issue.task_manger_mail%>`;
+    </script>
+  </body>
+</html>
