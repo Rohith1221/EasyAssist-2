@@ -59,6 +59,6 @@ if (navigator.geolocation)
       document.getElementById("issueID").value = makeid(7);
     },
     function () {
-      alert("could not get your location");
+      alert("could not get your coordinates , kindly activate the GPS on your mobile");
     }
   );
